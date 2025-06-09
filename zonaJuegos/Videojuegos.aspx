@@ -42,8 +42,8 @@
 
                 <asp:TemplateField HeaderText="Opciones">
                     <ItemTemplate>
-                        <asp:Button runat="server" Text="✏️ Editar" CssClass="btn form-control-sm btn-primary" CommandName="EditarVideojuego" CommandArgument='<%# Eval("ID") %>' />
-                        <asp:Button runat="server" Text="🗑️ Eliminar" CssClass="btn form-control-sm btn-danger" CommandName="EliminarVideojuego" CommandArgument='<%# Eval("ID") %>' OnClientClick="return confirm('¿Estás seguro de que quieres eliminar este videojuego?');" />
+                        <asp:Button runat="server" Text="✏️" CssClass="btn form-control-sm btn-primary" CommandName="EditarVideojuego" CommandArgument='<%# Eval("ID") %>' />
+                        <asp:Button runat="server" Text="🗑️" CssClass="btn form-control-sm btn-danger" CommandName="EliminarVideojuego" CommandArgument='<%# Eval("ID") %>' OnClientClick="return confirm('¿Estás seguro de que quieres eliminar este videojuego?');" />
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
