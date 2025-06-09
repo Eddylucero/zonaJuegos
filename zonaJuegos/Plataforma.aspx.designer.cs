@@ -15,6 +15,15 @@ namespace zonaJuegos
     {
 
         /// <summary>
+        /// Control lblTitulo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTitulo;
+
+        /// <summary>
         /// Control hdnPlataformaID.
         /// </summary>
         /// <remarks>
@@ -22,6 +31,15 @@ namespace zonaJuegos
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdnPlataformaID;
+
+        /// <summary>
+        /// Control lblFormularioTitulo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFormularioTitulo;
 
         /// <summary>
         /// Control txtNombrePlataforma.
@@ -33,13 +51,13 @@ namespace zonaJuegos
         protected global::System.Web.UI.WebControls.TextBox txtNombrePlataforma;
 
         /// <summary>
-        /// Control btnAgregarPlataforma.
+        /// Control btnGuardarPlataforma.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregarPlataforma;
+        protected global::System.Web.UI.WebControls.Button btnGuardarPlataforma;
 
         /// <summary>
         /// Control lblMensajePlataforma.

@@ -7,7 +7,6 @@ namespace zonaJuegos
 {
     public partial class Plataforma : System.Web.UI.Page
     {
-        // Obtener cadena de conexión desde Web.config
         string connectionString = ConfigurationManager.ConnectionStrings["conexionejercicio"]?.ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -37,7 +36,7 @@ namespace zonaJuegos
             }
         }
 
-        // Método de validación antes de insertar una plataforma
+        // Método de validación antes de insertar o actualizar una plataforma
         public bool ValidarPlataforma()
         {
             lblMensajePlataforma.Text = "";
@@ -62,22 +61,42 @@ namespace zonaJuegos
             return true;
         }
 
-        // Método para agregar una nueva plataforma
-        protected void btnAgregarPlataforma_Click(object sender, EventArgs e)
+        // Método para agregar o editar una plataforma
+        protected void btnGuardarPlataforma_Click(object sender, EventArgs e)
         {
             if (!ValidarPlataforma()) return;
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "EXEC sp_InsertarPlataforma @Nombre";
+                string query;
+
+                if (string.IsNullOrEmpty(hdnPlataformaID.Value)) // Si no hay ID, es un nuevo registro
+                {
+                    query = "EXEC sp_InsertarPlataforma @Nombre";
+                }
+                else // Si hay un ID, estamos en modo edición
+                {
+                    query = "EXEC sp_ActualizarPlataforma @Id, @Nombre";
+                }
+
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Nombre", txtNombrePlataforma.Text);
+
+                if (!string.IsNullOrEmpty(hdnPlataformaID.Value))
+                {
+                    cmd.Parameters.AddWithValue("@Id", Convert.ToInt32(hdnPlataformaID.Value));
+                }
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
-                lblMensajePlataforma.Text = "✅ ¡Plataforma agregada correctamente!";
+                lblMensajePlataforma.Text = "✅ ¡Plataforma guardada correctamente!";
+                hdnPlataformaID.Value = ""; // Limpiar el campo de ID después de guardar
+                txtNombrePlataforma.Text = ""; // Limpiar el campo de nombre
+                lblFormularioTitulo.Text = "Agregar Plataforma"; // Volver al modo agregar
+                btnGuardarPlataforma.Text = "Agregar Plataforma";
+
                 CargarPlataformas();
             }
         }
@@ -91,6 +110,9 @@ namespace zonaJuegos
             {
                 txtNombrePlataforma.Text = ObtenerNombrePlataforma(idPlataforma);
                 hdnPlataformaID.Value = idPlataforma.ToString();
+
+                lblFormularioTitulo.Text = "Editar Plataforma";
+                btnGuardarPlataforma.Text = "Actualizar Plataforma";
             }
             else if (e.CommandName == "EliminarPlataforma")
             {
@@ -115,7 +137,7 @@ namespace zonaJuegos
             string nombre = "";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT Nombre FROM Plataforma WHERE Id = @Id";
+                string query = "SELECT Nombre FROM dbo.Plataforma WHERE Id = @Id";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Id", idPlataforma);
 

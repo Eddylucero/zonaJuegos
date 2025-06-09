@@ -2,7 +2,9 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h1 class="text-center">Gestión de Plataformas</h1>
+    <h1 class="text-center">
+        <asp:Label ID="lblTitulo" runat="server" Text="Gestión de Plataformas"></asp:Label>
+    </h1>
 
     <div class="container mt-4 text-center">
         <asp:HiddenField ID="hdnPlataformaID" runat="server" />
@@ -10,11 +12,13 @@
 
     <div class="container d-flex justify-content-center mt-4" style="max-width: 500px;">
         <div>
-            <h3 class="text-center">Agregar Plataforma</h3>
+            <h3 class="text-center">
+                <asp:Label ID="lblFormularioTitulo" runat="server" Text="Agregar Plataforma"></asp:Label>
+            </h3>
             <asp:TextBox ID="txtNombrePlataforma" runat="server" CssClass="form-control" placeholder="Nombre de la plataforma" />
 
-            <asp:Button ID="btnAgregarPlataforma" runat="server" Text="Agregar Plataforma" CssClass="btn btn-primary mt-3 w-100" OnClick="btnAgregarPlataforma_Click" />
-        
+            <asp:Button ID="btnGuardarPlataforma" runat="server" Text="Agregar Plataforma" CssClass="btn btn-primary mt-3 w-100" OnClick="btnGuardarPlataforma_Click" />
+
             <br />
             <asp:Label ID="lblMensajePlataforma" runat="server" CssClass="text-error mt-2"></asp:Label>
         </div>
