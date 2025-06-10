@@ -155,21 +155,38 @@ namespace zonaJuegos
             }
             else if (e.CommandName == "EliminarPlataforma")
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                try
                 {
-                    string query = "EXEC sp_EliminarPlataforma @Id";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@Id", idPlataforma);
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        string query = "EXEC sp_EliminarPlataforma @Id";
+                        SqlCommand cmd = new SqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@Id", idPlataforma);
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
 
-                    CargarPlataformas();
+                        CargarPlataformas();
 
-                    // Mostrar mensaje de eliminación exitosa
-                    ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert",
-                        "Swal.fire({ title: '¡Eliminado!', text: 'Plataforma eliminada correctamente.', icon: 'success' });", true);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert",
+                            "Swal.fire({ title: '¡Eliminado!', text: 'Plataforma eliminada correctamente.', icon: 'success' });", true);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    // Verifica si el error es de clave foránea
+                    if (ex.Number == 547) // Número de error de SQL Server para violación de clave foránea
+                    {
+                        ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert",
+                            "Swal.fire({ title: 'Error', text: 'No se puede eliminar la plataforma porque está siendo utilizada por uno o más videojuegos.', icon: 'error' });", true);
+                    }
+                    else
+                    {
+                        // Otro error inesperado
+                        ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert",
+                            $"Swal.fire({{ title: 'Error inesperado', text: '{ex.Message}', icon: 'error' }});", true);
+                    }
                 }
             }
         }
