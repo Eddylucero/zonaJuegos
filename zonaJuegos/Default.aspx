@@ -2,10 +2,8 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <div class="jumbotron text-center">
-        <asp:Image ID="Image1" runat="server" ImageUrl="~/img/zonaJuegos_logo.png" AlternateText="Zona Juegos" CssClass="img-fluid mb-4 rounded-img" />
 
         <h1>Bienvenido a Zona Juegos</h1>
         <p>Gestiona videojuegos y plataformas de manera eficiente y organizada.</p>

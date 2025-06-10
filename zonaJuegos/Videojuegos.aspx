@@ -2,10 +2,10 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmarEliminacion(btn) {
-            event.preventDefault(); // Detiene el postback
+            event.preventDefault();
 
             Swal.fire({
                 title: "¿Estás seguro?",
@@ -16,7 +16,6 @@
                 cancelButtonText: "Cancelar"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Si confirma, disparar manualmente el postback del botón
                     __doPostBack(btn.name, '');
                 }
             });
@@ -24,7 +23,6 @@
             return false;
         }
     </script>
-
 
     <h1 class="text-center">
         <asp:Label ID="lblTitulo" runat="server" Text="Gestión de Videojuegos"></asp:Label>
@@ -40,13 +38,22 @@
                 <asp:Label ID="lblFormularioTitulo" runat="server" Text="Agregar Videojuego"></asp:Label>
             </h3>
 
-            <asp:TextBox ID="txtTitulo" runat="server" CssClass="form-control" placeholder="Título del videojuego" />
-            <asp:TextBox ID="txtGenero" runat="server" CssClass="form-control mt-2" placeholder="Género" />
-            <asp:TextBox ID="txtDesarrollador" runat="server" CssClass="form-control mt-2" placeholder="Desarrollador" />
-            <asp:TextBox ID="txtFechaLanzamiento" runat="server" CssClass="form-control mt-2" placeholder="Fecha de Lanzamiento (YYYY-MM-DD)" TextMode="Date" />
-            <asp:TextBox ID="txtClasificacion" runat="server" CssClass="form-control mt-2" placeholder="Clasificación" />
+            <label>Título del videojuego:</label>
+            <asp:TextBox ID="txtTitulo" runat="server" CssClass="form-control" />
 
-            <label class="mt-2">Plataforma</label>
+            <label>Género:</label>
+            <asp:TextBox ID="txtGenero" runat="server" CssClass="form-control mt-2" />
+
+            <label>Desarrollador:</label>
+            <asp:TextBox ID="txtDesarrollador" runat="server" CssClass="form-control mt-2" />
+
+            <label>Fecha de Lanzamiento (YYYY-MM-DD):</label>
+            <asp:TextBox ID="txtFechaLanzamiento" runat="server" CssClass="form-control mt-2" TextMode="Date" />
+
+            <label>Clasificación:</label>
+            <asp:TextBox ID="txtClasificacion" runat="server" CssClass="form-control mt-2" />
+
+            <label class="mt-2">Plataforma:</label>
             <asp:DropDownList ID="ddlPlataformas" runat="server" CssClass="form-control"></asp:DropDownList>
 
             <asp:Button ID="btnGuardarVideojuego" runat="server" Text="Agregar Videojuego" CssClass="btn btn-primary mt-3 w-100" OnClick="btnGuardarVideojuego_Click" />
@@ -73,9 +80,8 @@
                     <ItemTemplate>
                         <asp:Button runat="server" Text="✏️ Editar" CssClass="btn form-control-sm btn-primary" CommandName="EditarVideojuego" CommandArgument='<%# Eval("ID") %>' />
                         <asp:Button runat="server" Text="🗑️ Eliminar" CssClass="btn form-control-sm btn-danger"
-                            CommandName="EliminarVideojuego" CommandArgument='<%# Eval("ID") %>'
+                            CommandName="EliminarVideojuego" CommandArgument='<%# Eval("ID") %>' 
                             OnClientClick="return confirmarEliminacion(this);" />
-
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
