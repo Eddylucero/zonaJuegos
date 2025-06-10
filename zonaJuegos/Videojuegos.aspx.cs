@@ -108,6 +108,106 @@ namespace zonaJuegos
                 conn.Close();
             }
         }
+        public bool ValidarVideojuego()
+        {
+            lblMensajeVideojuego.Text = "";
+
+            // Validar que el título no esté vacío
+            if (string.IsNullOrWhiteSpace(txtTitulo.Text))
+            {
+                lblMensajeVideojuego.Text = "⚠ Error: El título del videojuego está vacío.";
+                return false;
+            }
+
+            // Expresión regular para validar solo letras y números en el título
+            string SoloLetrasYNumeros = @"^[A-Za-z0-9\s]+$";
+            if (!System.Text.RegularExpressions.Regex.IsMatch(txtTitulo.Text, SoloLetrasYNumeros))
+            {
+                lblMensajeVideojuego.Text = "⚠ Error: El título solo debe contener letras y números.";
+                return false;
+            }
+
+            // Validar género
+            if (string.IsNullOrWhiteSpace(txtGenero.Text))
+            {
+                lblMensajeVideojuego.Text = "⚠ Error: Debes ingresar un género.";
+                return false;
+            }
+
+            // Validar desarrollador
+            if (string.IsNullOrWhiteSpace(txtDesarrollador.Text))
+            {
+                lblMensajeVideojuego.Text = "⚠ Error: Debes ingresar el desarrollador.";
+                return false;
+            }
+
+            // Validar fecha de lanzamiento
+            if (!DateTime.TryParse(txtFechaLanzamiento.Text, out DateTime fecha) || fecha > DateTime.Now)
+            {
+                lblMensajeVideojuego.Text = "⚠ Error: La fecha de lanzamiento no puede ser mayor a la actual.";
+                return false;
+            }
+
+            // Validar clasificación
+            if (string.IsNullOrWhiteSpace(txtClasificacion.Text))
+            {
+                lblMensajeVideojuego.Text = "⚠ Error: Debes ingresar la clasificación.";
+                return false;
+            }
+
+            // Validar selección de plataforma
+            if (ddlPlataformas.SelectedIndex == -1)
+            {
+                lblMensajeVideojuego.Text = "⚠ Error: Debes seleccionar una plataforma.";
+                return false;
+            }
+
+            return true;
+        }
+        protected void btnGuardarVideojuego_Click(object sender, EventArgs e)
+        {
+            if (!ValidarVideojuego()) return;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query;
+                bool esNuevo = string.IsNullOrEmpty(hdnVideojuegoID.Value);
+
+                if (esNuevo)
+                {
+                    query = "EXEC sp_InsertarVideojuego @Titulo, @Genero, @Desarrollador, @FechaLanzamiento, @Clasificacion, @PlataformaId";
+                }
+                else
+                {
+                    query = "EXEC sp_ActualizarVideojuego @Id, @Titulo, @Genero, @Desarrollador, @FechaLanzamiento, @Clasificacion, @PlataformaId";
+                }
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Titulo", txtTitulo.Text);
+                cmd.Parameters.AddWithValue("@Genero", txtGenero.Text);
+                cmd.Parameters.AddWithValue("@Desarrollador", txtDesarrollador.Text);
+                cmd.Parameters.AddWithValue("@FechaLanzamiento", txtFechaLanzamiento.Text);
+                cmd.Parameters.AddWithValue("@Clasificacion", txtClasificacion.Text);
+                cmd.Parameters.AddWithValue("@PlataformaId", ddlPlataformas.SelectedValue);
+
+                if (!esNuevo)
+                {
+                    cmd.Parameters.AddWithValue("@Id", Convert.ToInt32(hdnVideojuegoID.Value));
+                }
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+
+                string mensaje = esNuevo ? "VIDEOJUEGO AGREGADO CORRECTAMENTE" : "VIDEOJUEGO EDITADO CORRECTAMENTE";
+                ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert",
+                    $"Swal.fire({{ title: '¡Éxito!', text: '{mensaje}', icon: 'success' }});", true);
+
+                LimpiarFormulario();
+                CargarVideojuegos();
+            }
+
+        }
 
         private void LimpiarFormulario()
         {
@@ -122,5 +222,7 @@ namespace zonaJuegos
             lblFormularioTitulo.Text = "Agregar Videojuego";
             btnGuardarVideojuego.Text = "Agregar Videojuego";
         }
+
+        
     }
 }
