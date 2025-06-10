@@ -166,6 +166,10 @@ namespace zonaJuegos
                     conn.Close();
 
                     CargarPlataformas();
+
+                    // Mostrar mensaje de eliminación exitosa
+                    ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert",
+                        "Swal.fire({ title: '¡Eliminado!', text: 'Plataforma eliminada correctamente.', icon: 'success' });", true);
                 }
             }
         }
