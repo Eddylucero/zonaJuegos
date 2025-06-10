@@ -53,7 +53,7 @@
                         <ul class="nav nav-secondary">
                             <!-- Enlace al Dashboard -->
                             <li class="nav-item active">
-                                <a href="#"><i class="fas fa-home"></i><p>Dashboard</p></a>
+                                <a href="/"><i class="fas fa-home"></i><p>Dashboard</p></a>
                             </li>
 
                             <!-- Enlace directo a Videojuegos -->
@@ -92,17 +92,17 @@
                             </ul>
                         </nav>
                         <div class="copyright">
-                            2025, desarrollado con ❤️ por Tu Nombre
+                            2025, desarrollado con ❤️.
                         </div>
                     </div>
                 </footer>
             </div>
         </div>
 
-        <!-- Kaiadmin JS -->
+        <!-- Scrips -->
         <script src="/Scripts/kaiadmin.min.js"></script>
         <script src="/Scripts/jquery.scrollbar.min.js"></script>
-        <script src="/Scripts/sweetalert/sweetalert.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="/Scripts/datatables.min.js"></script>
         <script src="/Scripts/setting-demo.js"></script>
 

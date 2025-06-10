@@ -1,8 +1,29 @@
-﻿<%@ Page Title="Plataformas" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Plataforma.aspx.cs" Inherits="zonaJuegos.Plataforma" %>
+﻿<%@ Page Title="Gestión de Plataformas" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Plataforma.aspx.cs" Inherits="zonaJuegos.Plataforma" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <h1 class="text-center">Gestión de Plataformas</h1>
+
+    <script>
+        function confirmarEliminacion(id) {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    __doPostBack('EliminarPlataforma', id);  // Debe coincidir con CommandName
+                }
+            });
+        }
+    </script>
+
+
+    <h1 class="text-center">
+        <asp:Label ID="lblTitulo" runat="server" Text="Gestión de Plataformas"></asp:Label>
+    </h1>
 
     <div class="container mt-4 text-center">
         <asp:HiddenField ID="hdnPlataformaID" runat="server" />
@@ -10,11 +31,18 @@
 
     <div class="container d-flex justify-content-center mt-4" style="max-width: 500px;">
         <div>
-            <asp:Label ID="lblFormularioTitulo" runat="server" CssClass="text-error mt-2"></asp:Label>
+            <h3 class="text-center">
+                <asp:Label ID="lblFormularioTitulo" runat="server" Text="Agregar Plataforma"></asp:Label>
+            </h3>
+
             <asp:TextBox ID="txtNombrePlataforma" runat="server" CssClass="form-control" placeholder="Nombre de la plataforma" />
-            
+            <asp:TextBox ID="txtFabricante" runat="server" CssClass="form-control mt-2" placeholder="Fabricante" />
+            <asp:TextBox ID="txtAnioLanzamiento" runat="server" CssClass="form-control mt-2" placeholder="Año de Lanzamiento" TextMode="Number" />
+            <asp:TextBox ID="txtTipo" runat="server" CssClass="form-control mt-2" placeholder="Tipo de Plataforma" />
+            <asp:TextBox ID="txtRegionDisponible" runat="server" CssClass="form-control mt-2" placeholder="Región Disponible" />
+
             <asp:Button ID="btnGuardarPlataforma" runat="server" Text="Agregar Plataforma" CssClass="btn btn-primary mt-3 w-100" OnClick="btnGuardarPlataforma_Click" />
-            
+
             <br />
             <asp:Label ID="lblMensajePlataforma" runat="server" CssClass="text-error mt-2"></asp:Label>
         </div>
@@ -27,11 +55,18 @@
             <Columns>
                 <asp:BoundField DataField="ID" HeaderText="ID" />
                 <asp:BoundField DataField="Nombre" HeaderText="Nombre" />
+                <asp:BoundField DataField="Fabricante" HeaderText="Fabricante" />
+                <asp:BoundField DataField="AnioLanzamiento" HeaderText="Año de Lanzamiento" />
+                <asp:BoundField DataField="Tipo" HeaderText="Tipo" />
+                <asp:BoundField DataField="RegionDisponible" HeaderText="Región Disponible" />
 
                 <asp:TemplateField HeaderText="Opciones">
                     <ItemTemplate>
-                        <asp:Button runat="server" Text="✏️" CssClass="btn form-control-sm btn-primary" CommandName="EditarPlataforma" CommandArgument='<%# Eval("ID") %>' />
-                        <asp:Button runat="server" Text="🗑️" CssClass="btn form-control-sm btn-danger" CommandName="EliminarPlataforma" CommandArgument='<%# Eval("ID") %>' OnClientClick="return confirm('¿Estás seguro de que quieres eliminar esta plataforma?');" />
+                        <asp:Button runat="server" Text="✏️ Editar" CssClass="btn form-control-sm btn-primary" CommandName="EditarPlataforma" CommandArgument='<%# Eval("ID") %>' />
+                        <asp:Button runat="server" Text="🗑️ Eliminar" CssClass="btn form-control-sm btn-danger"
+                            CommandName="EliminarPlataforma" CommandArgument='<%# Eval("ID") %>' 
+                            OnClientClick='<%# "confirmarEliminacion(" + Eval("ID") + "); return false;" %>' />
+
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>

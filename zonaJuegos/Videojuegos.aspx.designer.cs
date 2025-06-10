@@ -15,6 +15,15 @@ namespace zonaJuegos
     {
 
         /// <summary>
+        /// Control lblTitulo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTitulo;
+
+        /// <summary>
         /// Control hdnVideojuegoID.
         /// </summary>
         /// <remarks>
@@ -24,13 +33,31 @@ namespace zonaJuegos
         protected global::System.Web.UI.WebControls.HiddenField hdnVideojuegoID;
 
         /// <summary>
-        /// Control txtNombreVideojuego.
+        /// Control lblFormularioTitulo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNombreVideojuego;
+        protected global::System.Web.UI.WebControls.Label lblFormularioTitulo;
+
+        /// <summary>
+        /// Control txtTitulo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTitulo;
+
+        /// <summary>
+        /// Control txtGenero.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtGenero;
 
         /// <summary>
         /// Control txtDesarrollador.
@@ -51,15 +78,6 @@ namespace zonaJuegos
         protected global::System.Web.UI.WebControls.TextBox txtFechaLanzamiento;
 
         /// <summary>
-        /// Control txtGenero.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtGenero;
-
-        /// <summary>
         /// Control txtClasificacion.
         /// </summary>
         /// <remarks>
@@ -67,15 +85,6 @@ namespace zonaJuegos
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtClasificacion;
-
-        /// <summary>
-        /// Control txtPrecio.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPrecio;
 
         /// <summary>
         /// Control ddlPlataformas.
@@ -87,13 +96,13 @@ namespace zonaJuegos
         protected global::System.Web.UI.WebControls.DropDownList ddlPlataformas;
 
         /// <summary>
-        /// Control btnAgregarVideojuego.
+        /// Control btnGuardarVideojuego.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregarVideojuego;
+        protected global::System.Web.UI.WebControls.Button btnGuardarVideojuego;
 
         /// <summary>
         /// Control lblMensajeVideojuego.

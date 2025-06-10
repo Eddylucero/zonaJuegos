@@ -1,44 +1,67 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="zonaJuegos._Default" %>
+﻿<%@ Page Title="Zona Juegos - Inicio" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="zonaJuegos._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
-    <main>
-        <section class="row" aria-labelledby="aspnetTitle">
-            <h1 id="aspnetTitle">ASP.NET</h1>
-            <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-            <p><a href="http://www.asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-        </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <div class="jumbotron text-center">
+        <asp:Image ID="Image1" runat="server" ImageUrl="~/img/zonaJuegos_logo.png" AlternateText="Zona Juegos" CssClass="img-fluid mb-4 rounded-img" />
 
-        <div class="row">
-            <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-                <h2 id="gettingStartedTitle">Getting started</h2>
-                <p>
-                    ASP.NET Web Forms lets you build dynamic websites using a familiar drag-and-drop, event-driven model.
-                A design surface and hundreds of controls and components let you rapidly build sophisticated, powerful UI-driven sites with data access.
-                </p>
-                <p>
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-                </p>
-            </section>
-            <section class="col-md-4" aria-labelledby="librariesTitle">
-                <h2 id="librariesTitle">Get more libraries</h2>
-                <p>
-                    NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-                </p>
-                <p>
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
-                </p>
-            </section>
-            <section class="col-md-4" aria-labelledby="hostingTitle">
-                <h2 id="hostingTitle">Web Hosting</h2>
-                <p>
-                    You can easily find a web hosting company that offers the right mix of features and price for your applications.
-                </p>
-                <p>
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
-                </p>
-            </section>
+        <h1>Bienvenido a Zona Juegos</h1>
+        <p>Gestiona videojuegos y plataformas de manera eficiente y organizada.</p>
+
+        <div class="d-flex justify-content-center gap-3">
+            <a class="btn btn-primary btn-lg" runat="server" href="~/Videojuegos"><i class="fas fa-gamepad"></i> Gestionar Videojuegos</a>
+            <a class="btn btn-warning btn-lg" runat="server" href="~/Plataforma"><i class="fas fa-dice"></i> Gestionar Plataformas</a>
         </div>
-    </main>
+    </div>
+
+    <div class="container text-center mt-4">
+        <h2>¿Cómo funciona?</h2>
+        <p>Administra videojuegos, organiza plataformas y optimiza la gestión con nuestro sistema.</p>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <i class="fas fa-list-alt fa-3x text-primary mb-3"></i>
+                <h4>Organización Eficiente</h4>
+                <p>Clasifica y gestiona videojuegos en una interfaz intuitiva.</p>
+            </div>
+            <div class="col-md-6">
+                <i class="fas fa-cogs fa-3x text-warning mb-3"></i>
+                <h4>Plataformas Conectadas</h4>
+                <p>Administra tus plataformas favoritas y mejora la gestión.</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        }
+        .rounded-img {
+            border-radius: 15px;
+            max-width: 20%;
+            height: auto;
+        }
+        .btn-primary, .btn-warning {
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        .btn-primary i, .btn-warning i {
+            margin-right: 10px;
+        }
+        .container {
+            max-width: 60rem;
+        }
+        .fa-3x {
+            display: block;
+            margin-bottom: 15px;
+        }
+    </style>
 
 </asp:Content>

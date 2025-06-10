@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Configuration;
-using System.Text.RegularExpressions;
+using System.Web.UI;
 
 namespace zonaJuegos
 {
@@ -14,17 +14,16 @@ namespace zonaJuegos
         {
             if (string.IsNullOrEmpty(connectionString))
             {
-                throw new Exception("❌ Error: La cadena de conexión 'conexionejercicio' no está definida en Web.config.");
+                throw new Exception("Error: La cadena de conexión 'conexionejercicio' no está definida en Web.config.");
             }
 
             if (!IsPostBack)
             {
                 CargarPlataformas();
-                ReiniciarFormulario();
             }
         }
 
-        // Cargar todas las plataformas en el GridView
+        // Método para cargar plataformas en el GridView
         private void CargarPlataformas()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -38,29 +37,60 @@ namespace zonaJuegos
             }
         }
 
-        // Validación de nombre de plataforma
-        private bool ValidarPlataforma()
+        // Método de validación antes de insertar o actualizar una plataforma
+        public bool ValidarPlataforma()
         {
             lblMensajePlataforma.Text = "";
 
-            string soloLetrasYNumeros = @"^[A-Za-z0-9\s]+$";
+            // Expresión regular para validar solo letras y números en el nombre
+            string SoloLetrasYNumeros = @"^[A-Za-z0-9\s]+$";
 
+            // Validar que el nombre no esté vacío
             if (string.IsNullOrWhiteSpace(txtNombrePlataforma.Text))
             {
                 lblMensajePlataforma.Text = "⚠ Error: El nombre de la plataforma está vacío.";
                 return false;
             }
 
-            if (!Regex.IsMatch(txtNombrePlataforma.Text, soloLetrasYNumeros))
+            // Validar formato de nombre
+            if (!System.Text.RegularExpressions.Regex.IsMatch(txtNombrePlataforma.Text, SoloLetrasYNumeros))
             {
                 lblMensajePlataforma.Text = "⚠ Error: El nombre solo debe contener letras y números.";
+                return false;
+            }
+
+            // Validar que el fabricante no esté vacío
+            if (string.IsNullOrWhiteSpace(txtFabricante.Text))
+            {
+                lblMensajePlataforma.Text = "⚠ Error: Debes ingresar un fabricante.";
+                return false;
+            }
+
+            // Validar que el año de lanzamiento sea válido
+            if (!int.TryParse(txtAnioLanzamiento.Text, out int anio) || anio < 1950 || anio > DateTime.Now.Year)
+            {
+                lblMensajePlataforma.Text = "⚠ Error: El año de lanzamiento no es válido.";
+                return false;
+            }
+
+            // Validar que el tipo de plataforma no esté vacío
+            if (string.IsNullOrWhiteSpace(txtTipo.Text))
+            {
+                lblMensajePlataforma.Text = "⚠ Error: Debes ingresar el tipo de plataforma.";
+                return false;
+            }
+
+            // Validar que la región disponible no esté vacía
+            if (string.IsNullOrWhiteSpace(txtRegionDisponible.Text))
+            {
+                lblMensajePlataforma.Text = "⚠ Error: Debes ingresar la región donde está disponible.";
                 return false;
             }
 
             return true;
         }
 
-        // Botón para agregar o actualizar una plataforma
+        // Método para agregar o editar una plataforma
         protected void btnGuardarPlataforma_Click(object sender, EventArgs e)
         {
             if (!ValidarPlataforma()) return;
@@ -68,57 +98,60 @@ namespace zonaJuegos
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query;
-                SqlCommand cmd;
 
-                if (string.IsNullOrEmpty(hdnPlataformaID.Value))
+                if (string.IsNullOrEmpty(hdnPlataformaID.Value)) // Si no hay ID, es un nuevo registro
                 {
-                    // Insertar nueva plataforma
-                    query = "EXEC sp_InsertarPlataforma @Nombre";
-                    cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@Nombre", txtNombrePlataforma.Text);
+                    query = "EXEC sp_InsertarPlataforma @Nombre, @Fabricante, @AnioLanzamiento, @Tipo, @RegionDisponible";
                 }
-                else
+                else // Si hay un ID, estamos en modo edición
                 {
-                    // Actualizar plataforma existente
-                    query = "EXEC sp_ActualizarPlataforma @Id, @Nombre";
-                    cmd = new SqlCommand(query, conn);
+                    query = "EXEC sp_ActualizarPlataforma @Id, @Nombre, @Fabricante, @AnioLanzamiento, @Tipo, @RegionDisponible";
+                }
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@Nombre", txtNombrePlataforma.Text);
+                cmd.Parameters.AddWithValue("@Fabricante", txtFabricante.Text);
+                cmd.Parameters.AddWithValue("@AnioLanzamiento", txtAnioLanzamiento.Text);
+                cmd.Parameters.AddWithValue("@Tipo", txtTipo.Text);
+                cmd.Parameters.AddWithValue("@RegionDisponible", txtRegionDisponible.Text);
+
+                if (!string.IsNullOrEmpty(hdnPlataformaID.Value))
+                {
                     cmd.Parameters.AddWithValue("@Id", Convert.ToInt32(hdnPlataformaID.Value));
-                    cmd.Parameters.AddWithValue("@Nombre", txtNombrePlataforma.Text);
                 }
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
-                lblMensajePlataforma.Text = "✅ Plataforma guardada correctamente.";
-                ReiniciarFormulario();
+                ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert",
+                    "Swal.fire({ title: '¡Éxito!', text: 'Videojuego guardado correctamente.', icon: 'success' });", true);
+                hdnPlataformaID.Value = ""; // Limpiar el campo de ID después de guardar
+                txtNombrePlataforma.Text = ""; // Limpiar el campo de nombre
+                txtFabricante.Text = "";
+                txtAnioLanzamiento.Text = "";
+                txtTipo.Text = "";
+                txtRegionDisponible.Text = "";
+
+                lblFormularioTitulo.Text = "Agregar Plataforma"; // Volver al modo agregar
+                btnGuardarPlataforma.Text = "Agregar Plataforma";
+
                 CargarPlataformas();
             }
         }
 
-        // Reinicia los controles del formulario
-        private void ReiniciarFormulario()
-        {
-            hdnPlataformaID.Value = "";
-            txtNombrePlataforma.Text = "";
-            lblFormularioTitulo.Text = "Agregar Plataforma";
-            btnGuardarPlataforma.Text = "Agregar Plataforma";
-        }
-
-        // Acciones del GridView (editar o eliminar)
+        // Método para manejar las acciones en el GridView
         protected void gvPlataformas_RowCommand(object sender, System.Web.UI.WebControls.GridViewCommandEventArgs e)
         {
             int idPlataforma = Convert.ToInt32(e.CommandArgument);
 
             if (e.CommandName == "EditarPlataforma")
             {
-                string nombre = ObtenerNombrePlataforma(idPlataforma);
-                txtNombrePlataforma.Text = nombre;
+                CargarDatosPlataforma(idPlataforma);
                 hdnPlataformaID.Value = idPlataforma.ToString();
 
                 lblFormularioTitulo.Text = "Editar Plataforma";
                 btnGuardarPlataforma.Text = "Actualizar Plataforma";
-                lblMensajePlataforma.Text = "";
             }
             else if (e.CommandName == "EliminarPlataforma")
             {
@@ -133,32 +166,33 @@ namespace zonaJuegos
                     conn.Close();
 
                     CargarPlataformas();
-                    lblMensajePlataforma.Text = "✅ Plataforma eliminada correctamente.";
-                    ReiniciarFormulario();
                 }
             }
         }
 
-        // Obtener el nombre de una plataforma por su ID
-        private string ObtenerNombrePlataforma(int idPlataforma)
+        // Método para cargar los datos de una plataforma seleccionada
+        private void CargarDatosPlataforma(int idPlataforma)
         {
-            string nombre = "";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT Nombre FROM Plataformas WHERE ID = @Id";
+                string query = "SELECT * FROM Plataforma WHERE Id = @Id";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Id", idPlataforma);
 
                 conn.Open();
-                object result = cmd.ExecuteScalar();
-                conn.Close();
+                SqlDataReader reader = cmd.ExecuteReader();
 
-                if (result != null)
+                if (reader.Read())
                 {
-                    nombre = result.ToString();
+                    txtNombrePlataforma.Text = reader["Nombre"].ToString();
+                    txtFabricante.Text = reader["Fabricante"].ToString();
+                    txtAnioLanzamiento.Text = reader["AnioLanzamiento"].ToString();
+                    txtTipo.Text = reader["Tipo"].ToString();
+                    txtRegionDisponible.Text = reader["RegionDisponible"].ToString();
                 }
+
+                conn.Close();
             }
-            return nombre;
         }
     }
 }
