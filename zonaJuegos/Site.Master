@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
     <!-- Favicon -->
-    <link rel="icon" href="/Content/kaiadmin/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/Contentfavicon.ico" type="image/x-icon" />
 
     <!-- WebFont -->
     <script src="/Scripts/kaiadmin/assets/js/plugin/webfont/webfont.min.js"></script>
@@ -53,7 +53,7 @@
                         <ul class="nav nav-secondary">
                             <!-- Enlace al Dashboard -->
                             <li class="nav-item active">
-                                <a href="/"><i class="fas fa-home"></i><p>Dashboard</p></a>
+                                <a href="/"><i class="fas fa-home"></i><p>Inicio</p></a>
                             </li>
 
                             <!-- Enlace directo a Videojuegos -->
