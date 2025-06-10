@@ -4,7 +4,9 @@
 
 
     <script>
-        function confirmarEliminacion(id) {
+        function confirmarEliminacion(btn) {
+            event.preventDefault(); // Detiene el postback
+
             Swal.fire({
                 title: "¿Estás seguro?",
                 text: "Esta acción no se puede deshacer.",
@@ -14,11 +16,15 @@
                 cancelButtonText: "Cancelar"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    __doPostBack('EliminarVideojuego', id);  // Debe coincidir con CommandName
+                    // Si confirma, disparar manualmente el postback del botón
+                    __doPostBack(btn.name, '');
                 }
             });
+
+            return false;
         }
     </script>
+
 
     <h1 class="text-center">
         <asp:Label ID="lblTitulo" runat="server" Text="Gestión de Videojuegos"></asp:Label>
@@ -67,8 +73,9 @@
                     <ItemTemplate>
                         <asp:Button runat="server" Text="✏️ Editar" CssClass="btn form-control-sm btn-primary" CommandName="EditarVideojuego" CommandArgument='<%# Eval("ID") %>' />
                         <asp:Button runat="server" Text="🗑️ Eliminar" CssClass="btn form-control-sm btn-danger"
-                            CommandName="EliminarVideojuego" CommandArgument='<%# Eval("ID") %>' 
-                            OnClientClick='<%# "confirmarEliminacion(" + Eval("ID") + "); return false;" %>' />
+                            CommandName="EliminarVideojuego" CommandArgument='<%# Eval("ID") %>'
+                            OnClientClick="return confirmarEliminacion(this);" />
+
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
