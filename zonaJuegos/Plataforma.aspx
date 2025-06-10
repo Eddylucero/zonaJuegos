@@ -2,10 +2,10 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmarEliminacion(btn) {
-            event.preventDefault(); // Detiene el postback
+            event.preventDefault();
 
             Swal.fire({
                 title: "¿Estás seguro?",
@@ -16,7 +16,6 @@
                 cancelButtonText: "Cancelar"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Si confirma, disparar manualmente el postback del botón
                     __doPostBack(btn.name, '');
                 }
             });
@@ -24,8 +23,6 @@
             return false;
         }
     </script>
-
-
 
     <h1 class="text-center">
         <asp:Label ID="lblTitulo" runat="server" Text="Gestión de Plataformas"></asp:Label>
@@ -41,11 +38,20 @@
                 <asp:Label ID="lblFormularioTitulo" runat="server" Text="Agregar Plataforma"></asp:Label>
             </h3>
 
-            <asp:TextBox ID="txtNombrePlataforma" runat="server" CssClass="form-control" placeholder="Nombre de la plataforma" />
-            <asp:TextBox ID="txtFabricante" runat="server" CssClass="form-control mt-2" placeholder="Fabricante" />
-            <asp:TextBox ID="txtAnioLanzamiento" runat="server" CssClass="form-control mt-2" placeholder="Año de Lanzamiento" TextMode="Number" />
-            <asp:TextBox ID="txtTipo" runat="server" CssClass="form-control mt-2" placeholder="Tipo de Plataforma" />
-            <asp:TextBox ID="txtRegionDisponible" runat="server" CssClass="form-control mt-2" placeholder="Región Disponible" />
+            <label>Nombre de la plataforma:</label>
+            <asp:TextBox ID="txtNombrePlataforma" runat="server" CssClass="form-control" />
+
+            <label>Fabricante:</label>
+            <asp:TextBox ID="txtFabricante" runat="server" CssClass="form-control mt-2" />
+
+            <label>Año de Lanzamiento:</label>
+            <asp:TextBox ID="txtAnioLanzamiento" runat="server" CssClass="form-control mt-2" TextMode="Number" />
+
+            <label>Tipo de Plataforma:</label>
+            <asp:TextBox ID="txtTipo" runat="server" CssClass="form-control mt-2" />
+
+            <label>Región Disponible:</label>
+            <asp:TextBox ID="txtRegionDisponible" runat="server" CssClass="form-control mt-2" />
 
             <asp:Button ID="btnGuardarPlataforma" runat="server" Text="Agregar Plataforma" CssClass="btn btn-primary mt-3 w-100" OnClick="btnGuardarPlataforma_Click" />
 
@@ -70,10 +76,8 @@
                     <ItemTemplate>
                         <asp:Button runat="server" Text="✏️ Editar" CssClass="btn form-control-sm btn-primary" CommandName="EditarPlataforma" CommandArgument='<%# Eval("ID") %>' />
                         <asp:Button runat="server" Text="🗑️ Eliminar" CssClass="btn form-control-sm btn-danger"
-                            CommandName="EliminarPlataforma" CommandArgument='<%# Eval("ID") %>'
+                            CommandName="EliminarPlataforma" CommandArgument='<%# Eval("ID") %>' 
                             OnClientClick="return confirmarEliminacion(this);" />
-
-
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
