@@ -1,99 +1,112 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="zonaJuegos.SiteMaster" %>
 
 <!DOCTYPE html>
-
 <html lang="es">
 <head runat="server">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - Zona Juegos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/Content/kaiadmin/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
-    <asp:PlaceHolder runat="server">
-        <%: Scripts.Render("~/bundles/modernizr") %>
-    </asp:PlaceHolder>
+    <!-- WebFont -->
+    <script src="/Scripts/kaiadmin/assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+        WebFont.load({
+            google: { families: ["Public Sans:300,400,500,600,700"] },
+            custom: {
+                families: ["Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
+                urls: ["/Content/kaiadmin/assets/css/fonts.min.css"]
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
 
-    <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <!-- KaiAdmin CSS -->
+    <link rel="stylesheet" href="/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="/Content/plugins.min.css" />
+    <link rel="stylesheet" href="/Content/kaiadmin.min.css" />
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Librerías externas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.5.4/css/fileinput.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <style>
-        body {
-            background-color: #8c76d6;
-            min-height: 100vh;
-        }
-
-        .custom-navbar {
-            background-color: #2f4f4f !important;            
-        }
-
-        .navbar-dark .navbar-nav .nav-link {
-            color: white !important;
-            font-weight: 500;
-        }
-
-        .container.body-content {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.15);
-            margin-top: 30px;
-        }
-
-        nav.navbar {
-            height: auto;
-            min-height: 56px;
-            padding: 0.5rem 1rem;
-        }
-    </style>
+    <!-- JS Bootstrap y jQuery -->
+    <script src="/Scripts/jquery-3.7.1.min.js"></script>
+    <script src="/Scripts/popper.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
 </head>
+
 <body>
     <form runat="server">
-        <asp:ScriptManager runat="server">
-            <Scripts>
-                <asp:ScriptReference Name="MsAjaxBundle" />
-                <asp:ScriptReference Name="jquery" />
-                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
-                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
-                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
-                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
-                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
-                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
-                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
-                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
-                <asp:ScriptReference Name="WebFormsBundle" />
-            </Scripts>
-        </asp:ScriptManager>
+        <asp:ScriptManager runat="server" />
 
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark custom-navbar">
-            <div class="container">
-                <a class="navbar-brand" runat="server" href="~/">Zona Juegos</a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Videojuegos">Videojuegos</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="~/Plataforma">Plataformas</a></li>
-                    </ul>
+        <!-- Sidebar (puedes mover esto a un control UserControl si deseas modularizarlo) -->
+        <div class="wrapper">
+            <div class="sidebar" data-background-color="dark">
+                <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                    <div class="sidebar-content">
+                        <ul class="nav nav-secondary">
+                            <!-- Enlace al Dashboard -->
+                            <li class="nav-item active">
+                                <a href="#"><i class="fas fa-home"></i><p>Dashboard</p></a>
+                            </li>
+
+                            <!-- Enlace directo a Videojuegos -->
+                            <li class="nav-item">
+                                <a href="<%= ResolveUrl("~/Videojuegos.aspx") %>">
+                                    <i class="fas fa-gamepad"></i><p>Videojuegos</p>
+                                </a>
+
+                            </li>
+
+                            <!-- Enlace directo a Plataforma -->
+                            <li class="nav-item">
+                                <a href="<%= ResolveUrl("~/Plataforma.aspx") %>">
+                                    <i class="fas fa-laptop-code"></i><p>Plataformas</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </nav>
-        
-        <div class="container body-content">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
-            <hr />
-            <footer class="text-center">
-                <p class="text-muted">&copy; <%: DateTime.Now.Year %> - Zona Juegos</p>
-            </footer>
-        </div>
-    </form>
 
-    <!-- Bootstrap 5 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Contenido principal -->
+            <div class="main-panel">
+                <div class="container">
+                    <div class="page-inner">
+                        <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    <div class="container-fluid d-flex justify-content-between">
+                        <nav class="pull-left">
+                            <ul class="nav">
+                                <li class="nav-item"><a class="nav-link" href="https://themewagon.com">ThemeWagon</a></li>
+                            </ul>
+                        </nav>
+                        <div class="copyright">
+                            2025, desarrollado con ❤️ por Tu Nombre
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Kaiadmin JS -->
+        <script src="/Scripts/kaiadmin.min.js"></script>
+        <script src="/Scripts/jquery.scrollbar.min.js"></script>
+        <script src="/Scripts/sweetalert/sweetalert.min.js"></script>
+        <script src="/Scripts/datatables.min.js"></script>
+        <script src="/Scripts/setting-demo.js"></script>
+
+    </form>
 </body>
 </html>
+
